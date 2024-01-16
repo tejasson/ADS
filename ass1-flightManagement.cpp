@@ -65,23 +65,31 @@ class Flight {
         }
 
         void addFlight() {
-            City *temp = NULL;
+            City *currentNode = NULL;
             City *destinationNode = new City;
             int ch = 1;
             while (ch == 1) {
                 cout<<"enter source>>  ";
                 cin>>source;
                 cout<<"enter destination>>  ";
+                cin>>destination;
                 for ( int i = 0; i < 5; i++ ) {
                     if ( city[i] == source ) {
-                        headArr[i] -> next = destinationNode;
+                        currentNode -> next = destinationNode;
                         destinationNode -> city = destination;
                         destinationNode -> next = NULL;
+                        currentNode = destinationNode;
                     }
                 }
-
                 cout<<"want to add flight?? (1/0):  ";
                 cin>>ch;
             }
         }
 };
+
+int main() {
+    Flight obj;
+    obj.addFlight();
+
+    return 0;
+}
