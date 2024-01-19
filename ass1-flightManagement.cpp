@@ -17,79 +17,135 @@ class City {
 };
 
 class Flight {
-    string city[5];
+    string city[4];
     string source;
-    string destination;
-    City* headArr[5];
+    string destination;  
+    City* cityNodeArr[4];
 
-    City* newCityNode1 = new City;
-    City* newCityNode2 = new City;
-    City* newCityNode3 = new City;
-    City* newCityNode4 = new City;
-    City* newCityNode5 = new City;
+    City *City1Node = new City;
+    City *City2Node = new City;
+    City *City3Node = new City;
+    City *City4Node = new City;
 
-    City *headcity1 = NULL, *headcity2 = NULL, *headcity3 = NULL, *headcity4 = NULL, *headcity5 = NULL;
+    City *headcity1 = NULL, *headcity2 = NULL, *headcity3 = NULL, *headcity4 = NULL;
 
     public:
         Flight() {
-            headArr[0] = newCityNode1;
-            headArr[1] = newCityNode2;
-            headArr[2] = newCityNode3;
-            headArr[3] = newCityNode4;
-            headArr[4] = newCityNode5;
+            cityNodeArr[0] = City1Node;
+            cityNodeArr[1] = City2Node;
+            cityNodeArr[2] = City3Node;
+            cityNodeArr[3] = City4Node;
 
-            city[0] = "Nashik";
-            newCityNode1 -> city = city[0];
-            newCityNode1 -> next = NULL;
-            newCityNode1 = headcity1;
+            city[0] = "nashik";
+            headcity1 = City1Node;
+            headcity1 -> city = city[0];
+            headcity1 -> next = NULL;
 
-            city[1] = "Mumbai";
-            newCityNode2 -> city[1];
-            newCityNode2 -> next = NULL;
-            newCityNode2 = headcity2;
+            city[1] = "mumbai";
+            headcity2 = City2Node;
+            headcity2 -> city[1];
+            headcity2 -> next = NULL;
 
-            city[2] = "Pune";
-            newCityNode3 -> city[2];
-            newCityNode3 -> next = NULL;
-            newCityNode3 = headcity3;
+            city[2] = "pune";
+            headcity3 = City3Node;
+            headcity3 -> city[2];
+            headcity3 -> next = NULL;
 
-            city[3] = "Gwalior";
-            newCityNode4 -> city[3];
-            newCityNode4 -> next = NULL;
-            newCityNode4 = headcity4;
-
-            city[4] = "Indore";
-            newCityNode5 -> city[4];
-            newCityNode5 -> next = NULL;
-            newCityNode5 = headcity5;
+            city[3] = "gwalior";
+            headcity4 = City4Node;
+            headcity4 -> city[3];
+            headcity4 -> next = NULL;
         }
 
         void addFlight() {
-            City *currentNode = NULL;
-            City *destinationNode = new City;
+            cout<<endl<<"----------ADD FLIGHT----------"<<endl;
+            cout<<"enter source>>  ";
+            cin>>source;
+
             int ch = 1;
-            while (ch == 1) {
-                cout<<"enter source>>  ";
-                cin>>source;
+            while ( ch == 1 ) {
+                City *currentNode = NULL;
+                City *destinationNode = new City;
+                
                 cout<<"enter destination>>  ";
                 cin>>destination;
-                for ( int i = 0; i < 5; i++ ) {
+                for ( int i = 0; i < 4; i++ ) {
                     if ( city[i] == source ) {
+                        currentNode = cityNodeArr[i];
+                        while ( currentNode -> next != NULL ) {
+                            currentNode = currentNode -> next ;
+                        }
                         currentNode -> next = destinationNode;
                         destinationNode -> city = destination;
                         destinationNode -> next = NULL;
-                        currentNode = destinationNode;
+                        cout<<"route added"<<endl;
                     }
                 }
-                cout<<"want to add flight?? (1/0):  ";
+                cout<<"want to add more flight from same destination ?? (1/0):  ";
                 cin>>ch;
             }
+        }
+
+        void checkFlight() {
+            cout<<endl<<"----------CHECK FLIGHT----------"<<endl;
+            City* currentNode;
+
+            cout<<"source>>  ";
+            cin>>source;
+            cout<<"destination>>  ";
+            cin>>destination;
+
+            for ( int i = 0; i < 4; i++ ) {
+                if ( city[i] == source ) {
+                    currentNode = cityNodeArr[i];
+                    while ( currentNode -> next != NULL ) {
+                        if ( currentNode -> city == destination ) {
+                            cout<< "Yes, the flight exists"<<endl;
+                            return;
+                        }
+                        currentNode = currentNode -> next;
+                    }
+                    if ( currentNode -> city == destination ) {
+                        cout<< "Yes, the flight exists"<<endl;
+                        return;
+                    }
+                    cout<< "Sorry no direct flight is available"<<endl;
+                    return;
+                }
+            }
+            cout<<"No flight available from this source";
         }
 };
 
 int main() {
     Flight obj;
-    obj.addFlight();
+
+    int choice = 0;
+    while ( choice != 3 ) {
+        cout<<endl<<"********** MENU **********"<<endl;
+        cout<<"1. add flight"<<endl;
+        cout<<"2. check flight routes"<<endl;
+        cout<<"3. Exit"<<endl;
+        cout<<"enter choice: "; cin>>choice;
+
+        switch( choice ) {
+            case 1:
+                obj.addFlight();
+                break;
+            
+            case 2:
+                obj.checkFlight();
+                break;
+
+            case 3:
+                cout<<endl<<"exited..."<<endl<<endl;
+                break;
+            
+            default:
+                cout<<"enter a valid choice";
+                break;
+        }
+    }
 
     return 0;
 }
