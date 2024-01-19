@@ -13,13 +13,19 @@ using namespace std;
 class City {
     public:
         string city;
+        int flightTime;
         City *next;
 };
 
 class Flight {
     string city[4];
     string source;
-    string destination;  
+    string destination;
+    int flightTime = 0;
+    City* currentNode;
+    City *destinationNode = new City;
+    int adjMatriix[4][4];
+
     City* cityNodeArr[4];
 
     City *City1Node = new City;
@@ -64,11 +70,12 @@ class Flight {
 
             int ch = 1;
             while ( ch == 1 ) {
-                City *currentNode = NULL;
-                City *destinationNode = new City;
-                
                 cout<<"enter destination>>  ";
                 cin>>destination;
+
+                cout<<"Time of flight in minutes: ";
+                cin>>flightTime;
+
                 for ( int i = 0; i < 4; i++ ) {
                     if ( city[i] == source ) {
                         currentNode = cityNodeArr[i];
@@ -77,6 +84,7 @@ class Flight {
                         }
                         currentNode -> next = destinationNode;
                         destinationNode -> city = destination;
+                        destinationNode -> flightTime = flightTime;
                         destinationNode -> next = NULL;
                         cout<<"route added"<<endl;
                     }
@@ -88,7 +96,6 @@ class Flight {
 
         void checkFlight() {
             cout<<endl<<"----------CHECK FLIGHT----------"<<endl;
-            City* currentNode;
 
             cout<<"source>>  ";
             cin>>source;
@@ -107,6 +114,7 @@ class Flight {
                     }
                     if ( currentNode -> city == destination ) {
                         cout<< "Yes, the flight exists"<<endl;
+                        cout<<"it takes "<<flightTime<<" minutes to reach the destination"<<endl;
                         return;
                     }
                     cout<< "Sorry no direct flight is available"<<endl;
@@ -115,17 +123,48 @@ class Flight {
             }
             cout<<"No flight available from this source";
         }
+        
+        void adjacency() {
+            cout<<endl<<"----------ADJACENCY MATRIX----------"<<endl;
+
+            for ( int i = 0; i < 4; i++ ) {
+                for ( int j = 0; j < 4; j++ ) {
+                    adjMatriix[i][j] = 0;
+
+                    source = city[i];
+                    destination = city[j];
+                    
+                    currentNode = cityNodeArr[i];
+                    while ( currentNode -> next != NULL ) {
+                        if ( currentNode -> city == destination ) {
+                            adjMatriix[i][j] = 1;
+                        }
+                    }
+                    if ( currentNode -> city == destination ) {
+                        adjMatriix[i][j] = 1;
+                    }
+                }
+            }
+
+            for ( int i = 0; i < 4; i++ ) {
+                for ( int j = 0; i < 4; j++ ) {
+                    cout<<adjMatriix[i][j]<<"  ";
+                }
+                cout<<endl;
+            }
+        }
 };
 
 int main() {
     Flight obj;
 
     int choice = 0;
-    while ( choice != 3 ) {
+    while ( choice != 4 ) {
         cout<<endl<<"********** MENU **********"<<endl;
         cout<<"1. add flight"<<endl;
         cout<<"2. check flight routes"<<endl;
-        cout<<"3. Exit"<<endl;
+        cout<<"3. to print adjancency matix"<<endl;
+        cout<<"4. Exit"<<endl;
         cout<<"enter choice: "; cin>>choice;
 
         switch( choice ) {
@@ -138,6 +177,10 @@ int main() {
                 break;
 
             case 3:
+                obj.adjacency();
+                break;
+
+            case 4:
                 cout<<endl<<"exited..."<<endl<<endl;
                 break;
             
