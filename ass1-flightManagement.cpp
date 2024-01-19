@@ -142,8 +142,7 @@ int main() {
                 break;
             
             default:
-                cout<<"enter a valid choice";
-                break;
+                cout<<"enter a valid choice"<<endl;
         }
     }
 
