@@ -6,7 +6,7 @@
 // https://www.geeksforgeeks.org/breadth-first-search-or-bfs-for-a-graph/
 
 #include<iostream>
-#include<stack>
+#include<queue>
 using namespace std;
 
 class landmarksNode {
@@ -23,6 +23,7 @@ class GraphTraversal {
     landmarksNode *landmarksArr[10];
 
     string visited[10];
+    queue<string> queue;
 
     public:
         void addplace (string place) {
@@ -49,8 +50,28 @@ class GraphTraversal {
             cout<<"edge added"<<endl;
         }
 
-        void BFSTraversal () {
-
+        void BFSTraversal (string place) {
+            queue.push(place);
+            visited[0] = place;
+            int x = 0;
+            while (x < 5) {
+                for (int i = 0; i < landmarkIndex; i++) {
+                    if (place == landmarksArr[i]->place) {
+                        queue.pop();
+                        temp = landmarksArr[i];
+                        place = (temp->next)->place;
+                        while (temp->next != NULL) {
+                            temp = temp->next;
+                            queue.push(temp->place);
+                        }
+                    }
+                }
+                x++;
+            }
+            
+            for (int i = 0; i < landmarkIndex; i++) {
+                cout<<visited[i]<<"   ";
+            }
         }
 };
 
@@ -64,6 +85,18 @@ int main() {
 
     obj.addedge("engg","parking");
     obj.addedge("engg","canteen");
+    obj.addedge("poly","parking");
+    obj.addedge("poly","pharma");
+    obj.addedge("pharma","poly");
+    obj.addedge("pharma","canteen");
+    obj.addedge("canteen","parking");
+    obj.addedge("canteen","engg");
+    obj.addedge("canteen","pharma");
+    obj.addedge("parking","canteen");
+    obj.addedge("parking","poly");
+    obj.addedge("parking","engg");
+
+    obj.BFSTraversal("engg");
 
     return 0;
 }
