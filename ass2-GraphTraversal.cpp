@@ -50,27 +50,19 @@ class GraphTraversal {
             cout<<"edge added"<<endl;
         }
 
-        void BFSTraversal (string place) {
-            queue.push(place);
-            visited[0] = place;
-            int x = 0;
-            while (x < 5) {
+        void BFSTraversal (string start) {
+            cout << "BFS starting from node " << start << ": ";
+            q.push(start);
+            visited[0] = start;
+
+            while (!q.empty()) {
+                string current = q.front();
+                q.pop();
                 for (int i = 0; i < landmarkIndex; i++) {
-                    if (place == landmarksArr[i]->place) {
-                        queue.pop();
-                        temp = landmarksArr[i];
-                        place = (temp->next)->place;
-                        while (temp->next != NULL) {
-                            temp = temp->next;
-                            queue.push(temp->place);
-                        }
+                    if (current == landmarksArr[i]->place) {
+                        
                     }
                 }
-                x++;
-            }
-            
-            for (int i = 0; i < landmarkIndex; i++) {
-                cout<<visited[i]<<"   ";
             }
         }
 };
