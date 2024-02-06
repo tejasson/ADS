@@ -23,7 +23,7 @@ class GraphTraversal {
     landmarksNode *landmarksArr[10];
 
     string visited[10];
-    queue<string> queue;
+    queue<string> q;
 
     public:
         void addplace (string place) {
@@ -39,7 +39,7 @@ class GraphTraversal {
             for (int i = 0; i < landmarkIndex; i++) {
                 if (from == landmarksArr[i]->place) {
                     temp = landmarksArr[i];
-                    while (temp != NULL) {
+                    while (temp->next != NULL) {
                         temp = temp->next;
                     }
                     temp->next = newPlace;
@@ -51,18 +51,41 @@ class GraphTraversal {
         }
 
         void BFSTraversal (string start) {
-            cout << "BFS starting from node " << start << ": ";
+            cout << "BFS starting from node " << start << ": "<<endl;
+            int visitedIndex = 1, flag = 0;
+            
+            
+            temp = landmarksArr[0];
             q.push(start);
             visited[0] = start;
 
             while (!q.empty()) {
-                string current = q.front();
-                q.pop();
-                for (int i = 0; i < landmarkIndex; i++) {
-                    if (current == landmarksArr[i]->place) {
-                        
+                q.pop();               
+                while (temp->next != NULL) {
+                    temp = temp->next;
+                    
+                    for (int i = 0; i < visitedIndex; i++) {
+                        flag = 0;
+                        if (temp->place == visited[i]) {
+                            flag = 1;
+                            break;
+                        }
+                    }
+                    if (flag == 0) {
+                        q.push(temp->place);
+                        visited[visitedIndex] = temp->place;
+                        visitedIndex++;
                     }
                 }
+                for (int i = 0; i < landmarkIndex; i++) {
+                    if (q.front() == landmarksArr[i]->place) {
+                        temp = landmarksArr[i];
+                    }
+                }
+            }
+
+            for (int i = 0; i < visitedIndex; i++) {
+                cout<<visited[i]<<"   ";
             }
         }
 };
