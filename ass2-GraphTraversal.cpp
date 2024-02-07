@@ -17,7 +17,6 @@ class landmarksNode {
 
 class GraphTraversal {
     int landmarkIndex = 0;
-    landmarksNode *newPlace = new landmarksNode;
     landmarksNode *temp;
 
     landmarksNode *landmarksArr[10];
@@ -27,15 +26,16 @@ class GraphTraversal {
 
     public:
         void addplace (string place) {
+            landmarksNode *newPlace = new landmarksNode;
             landmarksArr[landmarkIndex] = newPlace;
             newPlace->place = place;
             newPlace->next = NULL;
             landmarkIndex++;
-
             cout<<"landmark added"<<endl;
         }
 
         void addedge (string from, string to) {
+            landmarksNode *newPlace = new landmarksNode;
             for (int i = 0; i < landmarkIndex; i++) {
                 if (from == landmarksArr[i]->place) {
                     temp = landmarksArr[i];
@@ -51,9 +51,8 @@ class GraphTraversal {
         }
 
         void BFSTraversal (string start) {
-            cout << "BFS starting from node " << start << ": "<<endl;
+            cout<<endl << "BFS starting from node '" << start << "': "<<endl;
             int visitedIndex = 1, flag = 0;
-            
             
             temp = landmarksArr[0];
             q.push(start);
@@ -80,10 +79,10 @@ class GraphTraversal {
                 for (int i = 0; i < landmarkIndex; i++) {
                     if (q.front() == landmarksArr[i]->place) {
                         temp = landmarksArr[i];
+                        break;
                     }
                 }
             }
-
             for (int i = 0; i < visitedIndex; i++) {
                 cout<<visited[i]<<"   ";
             }
@@ -100,10 +99,10 @@ int main() {
 
     obj.addedge("engg","parking");
     obj.addedge("engg","canteen");
-    obj.addedge("poly","parking");
-    obj.addedge("poly","pharma");
     obj.addedge("pharma","poly");
     obj.addedge("pharma","canteen");
+    obj.addedge("poly","parking");
+    obj.addedge("poly","pharma");
     obj.addedge("canteen","parking");
     obj.addedge("canteen","engg");
     obj.addedge("canteen","pharma");
