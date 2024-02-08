@@ -7,6 +7,7 @@
 
 #include<iostream>
 #include<queue>
+#include<stack>
 using namespace std;
 
 class landmarksNode {
@@ -21,8 +22,11 @@ class GraphTraversal {
 
     landmarksNode *landmarksArr[10];
 
-    string visited[10];
+    string visitedQ[10];
     queue<string> q;
+
+    string visitedStk[10];
+    stack<string> stk;
 
     public:
         void addplace (string place) {
@@ -50,13 +54,13 @@ class GraphTraversal {
             cout<<"edge added"<<endl;
         }
 
-        void BFSTraversal (string start) {
+        void BFSTraversal (string start) {  //Breadth first traversal
             cout<<endl << "BFS starting from node '" << start << "': "<<endl;
-            int visitedIndex = 1, flag = 0;
             
+            int visitedIndex = 1, flag = 0;
             temp = landmarksArr[0];
             q.push(start);
-            visited[0] = start;
+            visitedQ[0] = start;
 
             while (!q.empty()) {
                 q.pop();               
@@ -65,14 +69,14 @@ class GraphTraversal {
                     
                     for (int i = 0; i < visitedIndex; i++) {
                         flag = 0;
-                        if (temp->place == visited[i]) {
+                        if (temp->place == visitedQ[i]) {
                             flag = 1;
                             break;
                         }
                     }
                     if (flag == 0) {
                         q.push(temp->place);
-                        visited[visitedIndex] = temp->place;
+                        visitedQ[visitedIndex] = temp->place;
                         visitedIndex++;
                     }
                 }
@@ -84,8 +88,52 @@ class GraphTraversal {
                 }
             }
             for (int i = 0; i < visitedIndex; i++) {
-                cout<<visited[i]<<"   ";
+                cout<<visitedQ[i]<<"   ";
             }
+            cout<<endl;
+        }
+
+        void DFSTraversal (string start) { //Depth first search
+
+            cout<<endl << "DFS starting from node '" << start << "': "<<endl;
+
+            int visitedIndex = 0, flag = 0;
+            for (int i = 0; i < landmarkIndex; i++) {
+                if (start == landmarksArr[i]->place) {
+                    temp = landmarksArr[i];
+                    stk.push(temp->place);
+                    visitedStk[visitedIndex] = temp->place;
+                    visitedIndex++;
+                    break;
+                }
+            }
+            while (!stk.empty()) {
+                stk.pop();
+                while (temp->next != NULL) {
+                    for (int i = 0; i < visitedIndex; i++) {
+                        flag = 0;
+                        if (temp->place == visitedStk[i]) {
+                            flag = 1;
+                            break;
+                        }
+                    }
+                    if (flag == 0) {
+                        q.push(temp->place);
+                        visitedStk[visitedIndex] = temp->place;
+                        visitedIndex++;
+                    }
+                }
+                for (int i = 0; i < landmarkIndex; i++) {
+                    if (stk.top() == landmarksArr[i]->place) {
+                        temp = landmarksArr[i];
+                        break;
+                    }
+                }
+            }
+            for (int i = 0; i < visitedIndex; i++) {
+                cout<<visitedStk[i]<<"   ";
+            }
+            cout<<endl;
         }
 };
 
@@ -111,6 +159,8 @@ int main() {
     obj.addedge("parking","engg");
 
     obj.BFSTraversal("engg");
+    
+    obj.DFSTraversal("engg");
 
     return 0;
 }
