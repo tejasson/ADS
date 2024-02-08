@@ -10,145 +10,98 @@
 #include<iostream>
 using namespace std;
 
-class City {
+class CityNode {
     public:
         string city;
         int flightTime;
-        City *next;
+        CityNode *next;
 };
 
-class Flight {
-    string city[4];
-    string source;
-    string destination;
-    int flightTime = 0;
-    City* currentNode;
-    City *destinationNode = new City;
-    int adjMatriix[4][4];
-
-    City* cityNodeArr[4];
-
-    City *City1Node = new City;
-    City *City2Node = new City;
-    City *City3Node = new City;
-    City *City4Node = new City;
-
-    City *headcity1 = NULL, *headcity2 = NULL, *headcity3 = NULL, *headcity4 = NULL;
+class FlightGraph {
+    CityNode *temp;
+    CityNode *CityArr[10];
+    int cityIndex = 0;
 
     public:
-        Flight() {
-            cityNodeArr[0] = City1Node;
-            cityNodeArr[1] = City2Node;
-            cityNodeArr[2] = City3Node;
-            cityNodeArr[3] = City4Node;
-
-            city[0] = "nashik";
-            headcity1 = City1Node;
-            headcity1 -> city = city[0];
-            headcity1 -> next = NULL;
-
-            city[1] = "mumbai";
-            headcity2 = City2Node;
-            headcity2 -> city[1];
-            headcity2 -> next = NULL;
-
-            city[2] = "pune";
-            headcity3 = City3Node;
-            headcity3 -> city[2];
-            headcity3 -> next = NULL;
-
-            city[3] = "gwalior";
-            headcity4 = City4Node;
-            headcity4 -> city[3];
-            headcity4 -> next = NULL;
+        void addCity (string city) {
+            CityNode *newCity = new CityNode;
+            CityArr[cityIndex] = newCity;
+            newCity->city = city;
+            newCity->flightTime = 0;
+            newCity->next = NULL;
+            cityIndex++;
+            cout<<"City added"<<endl;
         }
 
-        void addFlight() {
-            cout<<endl<<"----------ADD FLIGHT----------"<<endl;
-            cout<<"enter source>>  ";
-            cin>>source;
-
-            int ch = 1;
-            while ( ch == 1 ) {
-                cout<<"enter destination>>  ";
-                cin>>destination;
-
-                cout<<"Time of flight in minutes: ";
-                cin>>flightTime;
-
-                for ( int i = 0; i < 4; i++ ) {
-                    if ( city[i] == source ) {
-                        currentNode = cityNodeArr[i];
-                        while ( currentNode -> next != NULL ) {
-                            currentNode = currentNode -> next ;
-                        }
-                        currentNode -> next = destinationNode;
-                        destinationNode -> city = destination;
-                        destinationNode -> flightTime = flightTime;
-                        destinationNode -> next = NULL;
-                        cout<<"route added"<<endl;
+        void addFlight (string src, string dest, int time) {
+            CityNode *newCity = new CityNode;
+            for (int i = 0; i < cityIndex; i++) {
+                if (CityArr[i]->city == src) {
+                    temp = CityArr[i];
+                    while (temp->next != NULL) {
+                        temp = temp->next;                        
                     }
+                    temp->next = newCity;
+                    newCity->city = dest;
+                    newCity->flightTime = time;
+                    newCity->next=NULL;
                 }
-                cout<<"want to add more flight from same destination ?? (1/0):  ";
-                cin>>ch;
             }
+            cout<<"route added"<<endl;
         }
 
-        void checkFlight() {
-            cout<<endl<<"----------CHECK FLIGHT----------"<<endl;
-
-            cout<<"source>>  ";
-            cin>>source;
-            cout<<"destination>>  ";
-            cin>>destination;
-
-            for ( int i = 0; i < 4; i++ ) {
-                if ( city[i] == source ) {
-                    currentNode = cityNodeArr[i];
-                    while ( currentNode -> next != NULL ) {
-                        if ( currentNode -> city == destination ) {
-                            cout<< "Yes, the flight exists"<<endl;
+        void checkFlight(string src, string dest) {
+            for (int i = 0; i < cityIndex; i++) {
+                if (src == CityArr[i]->city) {
+                    temp = CityArr[i];
+                    while (temp->next != NULL) {
+                        temp = temp->next;
+                        if (dest == temp->city) {
+                            cout<<endl<<"there's a flight which takes "<<temp->flightTime<<" min"<<endl;
                             return;
                         }
-                        currentNode = currentNode -> next;
                     }
-                    if ( currentNode -> city == destination ) {
-                        cout<< "Yes, the flight exists"<<endl;
-                        cout<<"it takes "<<flightTime<<" minutes to reach the destination"<<endl;
-                        return;
-                    }
-                    cout<< "Sorry no direct flight is available"<<endl;
-                    return;
                 }
             }
-            cout<<"No flight available from this source";
+            cout<<"no flight between these cities"<<endl;
         }
-        
-        void adjacency() {
-            cout<<endl<<"----------ADJACENCY MATRIX----------"<<endl;
 
-            for ( int i = 0; i < 4; i++ ) {
-                for ( int j = 0; j < 4; j++ ) {
-                    adjMatriix[i][j] = 0;
+        void adjacencyList() {
+            cout << endl << "----------ADJACENCY LIST----------" << endl;
+            for (int i = 0; i < cityIndex; i++) {
+                temp = CityArr[i];
+                cout<<temp->city;
+                while (temp->next != NULL) {
+                    temp = temp->next;
+                    cout<<" -> "<<temp->city;
+                }
+                cout<<endl;
+            }
+        }
 
-                    source = city[i];
-                    destination = city[j];
-                    
-                    currentNode = cityNodeArr[i];
-                    while ( currentNode -> next != NULL ) {
-                        if ( currentNode -> city == destination ) {
-                            adjMatriix[i][j] = 1;
+        void adjacencyMatrix() {
+            cout << endl << "----------ADJACENCY MATRIX----------" << endl;
+            int matrix[cityIndex][cityIndex];
+            for (int i = 0; i < cityIndex; i++) {
+                for (int j = 0; j < cityIndex; j++) {
+                    matrix[i][j] = 0;
+                }
+            }
+            for (int i = 0; i < cityIndex; i++) {
+                temp = CityArr[i];
+                for (int j = 0; j < cityIndex; j++) {
+                    string cityB = CityArr[j]->city;
+                    while (temp->next != NULL) {
+                        temp = temp->next;
+                        if (temp->city == cityB) { 
+                            matrix[i][j] = 1;
                         }
                     }
-                    if ( currentNode -> city == destination ) {
-                        adjMatriix[i][j] = 1;
-                    }
                 }
             }
-
-            for ( int i = 0; i < 4; i++ ) {
-                for ( int j = 0; i < 4; j++ ) {
-                    cout<<adjMatriix[i][j]<<"  ";
+            for (int i = 0; i < cityIndex; i++) {
+                for (int j = 0; j < cityIndex; j++) {
+                    cout<<matrix[i][j]<<"  ";
                 }
                 cout<<endl;
             }
@@ -156,38 +109,24 @@ class Flight {
 };
 
 int main() {
-    Flight obj;
+    FlightGraph obj;
 
-    int choice = 0;
-    while ( choice != 4 ) {
-        cout<<endl<<"********** MENU **********"<<endl;
-        cout<<"1. add flight"<<endl;
-        cout<<"2. check flight routes"<<endl;
-        cout<<"3. to print adjancency matix"<<endl;
-        cout<<"4. Exit"<<endl;
-        cout<<"enter choice: "; cin>>choice;
+    obj.addCity("nashik");
+    obj.addCity("mumbai");
+    obj.addCity("udaipur");
+    obj.addCity("rishikesh");
 
-        switch( choice ) {
-            case 1:
-                obj.addFlight();
-                break;
-            
-            case 2:
-                obj.checkFlight();
-                break;
+    obj.addFlight("nashik", "mumbai", 60);
+    obj.addFlight("mumbai", "udaipur", 150);
+    obj.addFlight("udaipur", "nashik", 180);
+    obj.addFlight("rishikesh", "mumbai", 180);
 
-            case 3:
-                obj.adjacency();
-                break;
+    obj.checkFlight("nashik","mumbai");
+    obj.checkFlight("mumbai","nashik");
 
-            case 4:
-                cout<<endl<<"exited..."<<endl<<endl;
-                break;
-            
-            default:
-                cout<<"enter a valid choice"<<endl;
-        }
-    }
+    obj.adjacencyList();
+
+    obj.adjacencyMatrix();
 
     return 0;
 }
