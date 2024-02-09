@@ -57,7 +57,7 @@ class GraphTraversal {
             
             int visitedIndex = 1, flag = 0;
             temp = landmarksArr[0];
-            q.push(start);
+            stk.push(start);
             visitedQ[0] = start;
 
             while (!q.empty()) {
