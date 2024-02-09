@@ -143,6 +143,7 @@ int main() {
     obj.addplace("canteen");
     obj.addplace("parking");
 
+    cout<<endl;
     obj.addedge("engg","parking");
     obj.addedge("engg","canteen");
     obj.addedge("pharma","poly");
