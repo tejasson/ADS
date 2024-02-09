@@ -3,6 +3,8 @@
 // Write a menu driven C++ program to represent this as a graph using
 // adjacency matrix /list and perform DFS and BFS.
 
+// https://www.geeksforgeeks.org/breadth-first-search-or-bfs-for-a-graph/
+
 #include<iostream>
 #include<queue>
 #include<stack>
@@ -52,12 +54,13 @@ class GraphTraversal {
             cout<<"edge added"<<endl;
         }
 
-        void BFSTraversal (string start) {  //Breadth-first traversal
+        void BFSTraversal (string start) {  //Breadth first traversal
             cout<<endl << "BFS starting from node '" << start << "': "<<endl;
             
-            int visitedIndex = 1, flag = 0;
+            int visitedIndex = 1;
+            string flag = "green";
             temp = landmarksArr[0];
-            stk.push(start);
+            q.push(start);
             visitedQ[0] = start;
 
             while (!q.empty()) {
@@ -66,13 +69,13 @@ class GraphTraversal {
                     temp = temp->next;
                     
                     for (int i = 0; i < visitedIndex; i++) {
-                        flag = 0;
+                        flag = "green";
                         if (temp->place == visitedQ[i]) {
-                            flag = 1;
+                            flag = "red";
                             break;
                         }
                     }
-                    if (flag == 0) {
+                    if (flag == "green") {
                         q.push(temp->place);
                         visitedQ[visitedIndex] = temp->place;
                         visitedIndex++;
@@ -86,16 +89,16 @@ class GraphTraversal {
                 }
             }
             for (int i = 0; i < visitedIndex; i++) {
-                cout<<visitedQ[i]<<"   ";
+                cout<<visitedQ[i]<<" | ";
             }
             cout<<endl;
         }
 
-        void DFSTraversal (string start) { //Depth-first search
-
+        void DFSTraversal (string start) { //Depth first search
             cout<<endl << "DFS starting from node '" << start << "': "<<endl;
 
-            int visitedIndex = 0, flag = 0;
+            int visitedIndex = 0;
+            string flag = "green";
             for (int i = 0; i < landmarkIndex; i++) {
                 if (start == landmarksArr[i]->place) {
                     temp = landmarksArr[i];
@@ -108,19 +111,20 @@ class GraphTraversal {
             while (!stk.empty()) {
                 stk.pop();
                 while (temp->next != NULL) {
+                    temp = temp->next;
                     for (int i = 0; i < visitedIndex; i++) {
-                        flag = 0;
                         if (temp->place == visitedStk[i]) {
-                            flag = 1;
+                            flag = "red";
                             break;
                         }
                     }
-                    if (flag == 0) {
-                        q.push(temp->place);
-                        visitedStk[visitedIndex] = temp->place;
-                        visitedIndex++;
+                    if (flag == "green") {
+                        stk.push(temp->place);
                     }
                 }
+                visitedStk[visitedIndex] = stk.top();
+                visitedIndex++;
+
                 for (int i = 0; i < landmarkIndex; i++) {
                     if (stk.top() == landmarksArr[i]->place) {
                         temp = landmarksArr[i];
