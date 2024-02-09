@@ -3,8 +3,6 @@
 // Write a menu driven C++ program to represent this as a graph using
 // adjacency matrix /list and perform DFS and BFS.
 
-// https://www.geeksforgeeks.org/breadth-first-search-or-bfs-for-a-graph/
-
 #include<iostream>
 #include<queue>
 #include<stack>
@@ -54,7 +52,7 @@ class GraphTraversal {
             cout<<"edge added"<<endl;
         }
 
-        void BFSTraversal (string start) {  //Breadth first traversal
+        void BFSTraversal (string start) {  //Breadth-first traversal
             cout<<endl << "BFS starting from node '" << start << "': "<<endl;
             
             int visitedIndex = 1, flag = 0;
@@ -93,7 +91,7 @@ class GraphTraversal {
             cout<<endl;
         }
 
-        void DFSTraversal (string start) { //Depth first search
+        void DFSTraversal (string start) { //Depth-first search
 
             cout<<endl << "DFS starting from node '" << start << "': "<<endl;
 
