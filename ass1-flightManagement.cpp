@@ -116,6 +116,7 @@ int main() {
     obj.addCity("udaipur");
     obj.addCity("rishikesh");
 
+    court<<endl
     obj.addFlight("nashik", "mumbai", 60);
     obj.addFlight("mumbai", "udaipur", 150);
     obj.addFlight("udaipur", "nashik", 180);
