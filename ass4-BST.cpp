@@ -6,6 +6,7 @@
 // v. Print values in ascending and descending order
 
 #include<iostream>
+#include<stack>
 using namespace std;
 
 class Node {
@@ -16,6 +17,7 @@ class Node {
 };
 
 class BST {
+    stack<Node*> stk;
     Node *root = new Node;
     Node *temp;
     public:
@@ -26,7 +28,7 @@ class BST {
 
         void insert(int data) {
             temp = root;
-            Node *newNode = new Node; // Create a new node
+            Node *newNode = new Node;
             while (true) {
                 if (data < temp->value) {
                     if (temp->left == nullptr) {
@@ -58,6 +60,19 @@ class BST {
             }
             cout << "Minimum value: " << temp->value << endl;
         }
+
+        void inorder() {
+            Node *poppedNode;
+            stk.push(root);
+            while(!stk.empty()) {
+                poppedNode = stk.top();
+                stk.pop();
+                cout<<poppedNode->value;
+                
+                stk.push(poppedNode->right);
+                stk.push(poppedNode->left);
+            }
+        }
 };
 
 int main() {
@@ -69,6 +84,8 @@ int main() {
     obj.insert(67);
 
     obj.minValue();
+
+    obj.inorder();
 
     return 0;
 }
